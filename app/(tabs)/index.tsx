@@ -57,18 +57,20 @@ export default function App() {
         <Text style={[styles.portfolioText, { color: theme.textColor }]}>
           art's portfolio
         </Text>
+      </View>
+      <View style={styles.homeContainer}>
         <Animated.View style={[styles.themeToggle, { opacity: fadeAnim }]}>
-          <Text style={styles.themeEmoji}>{isDarkMode ? '🌓' : '☀️'}</Text>
-          <Text style={[styles.themeText, { color: theme.textColor }]}>
-            {isDarkMode ? 'Dark Mode' : 'Light Mode'}
-          </Text>
-          <Switch
-            value={isDarkMode}
-            onValueChange={toggleTheme}
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
-          />
-        </Animated.View>
+            <Text style={styles.themeEmoji}>{isDarkMode ? '🌓' : '☀️'}</Text>
+            <Text style={[styles.themeText, { color: theme.textColor }]}>
+              {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+            </Text>
+            <Switch
+              value={isDarkMode}
+              onValueChange={toggleTheme}
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
+            />
+          </Animated.View>
       </View>
     </SafeAreaView>
   );
@@ -77,15 +79,20 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   profileContainer: {
+    flexDirection: "row",
     alignItems: 'center',
+    marginTop: 40,
+  },
+  homeContainer: {
+    flexDirection: "row",
   },
   imageContainer: {
-    width: 100,
-    height: 100,
+    width: 75,
+    height: 75,
     borderRadius: 100,
     overflow: 'hidden',
     marginBottom: 20,
@@ -95,8 +102,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    top: 0,
-    left: 0,
   },
   profileImageFallback: {
     width: '100%',
@@ -105,9 +110,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   portfolioText: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginLeft: 15,
   },
   themeToggle: {
     flexDirection: 'row',
