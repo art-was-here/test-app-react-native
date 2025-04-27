@@ -15,6 +15,11 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(deviceTheme === 'dark');
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+  useEffect(() => {
+    setIsDarkMode(deviceTheme === 'dark');
+    fadeAnim.setValue(deviceTheme === 'dark' ? 1 : 0);
+  }, [deviceTheme, fadeAnim]);
+
   const theme = {
     backgroundColor: isDarkMode ? '#121212' : '#FFFFFF',
     textColor: isDarkMode ? '#FFFFFF' : '#000000',
@@ -60,7 +65,7 @@ export default function App() {
           />
         </View>
         <Text style={[styles.portfolioText, { color: theme.textColor }]}>
-          art's portfolio
+          Favorite Horror Movies
         </Text>
       </View>
       <View style={styles.homeContainer}>
