@@ -13,7 +13,7 @@ import {
 export default function App() {
   const deviceTheme = useColorScheme();
   const [isDarkMode, setIsDarkMode] = useState(deviceTheme === 'dark');
-  const fadeAnim = useRef(new Animated.Value(1)).current; // Initial opacity: 1
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const theme = {
     backgroundColor: isDarkMode ? '#121212' : '#FFFFFF',
@@ -21,36 +21,41 @@ export default function App() {
     secondaryBackgroundColor: isDarkMode ? '#333333' : '#F2F2F2',
   };
 
-  const toggleTheme = () => {
-    // Start fade-out
+  const toggleBackground = () => {
+    setIsDarkMode(!isDarkMode);
     Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 150,
-      useNativeDriver: true,
-    }).start(() => {
-      // Update theme after fade-out
-      setIsDarkMode(!isDarkMode);
-    });
-  };
-
-  // Trigger fade-in when isDarkMode changes
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 150,
+      toValue: isDarkMode ? 0 : 1,
+      duration: 300,
       useNativeDriver: true,
     }).start();
-  }, [isDarkMode]);
+  };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <View style={styles.container}>
+      {/* Light mode background */}
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          { backgroundColor: '#FFFFFF', opacity: fadeAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [1, 0], // Light visible when fadeAnim is 0
+          }) },
+        ]}
+      />
+      {/* Dark mode background */}
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          { backgroundColor: '#121212', opacity: fadeAnim },
+        ]}
+      />
       <View style={styles.profileContainer}>
         <View style={styles.imageContainer}>
           <View style={[styles.profileImageFallback, { backgroundColor: theme.secondaryBackgroundColor }]}>
             <Text style={{ fontSize: 60, color: theme.textColor }}>👤</Text>
           </View>
           <Image
-            source={require('@/assets/images/profile-modified.png')} // Relative path
+            source={require('@/assets/images/profile-modified.png')}
             style={styles.profileImage}
           />
         </View>
@@ -59,20 +64,20 @@ export default function App() {
         </Text>
       </View>
       <View style={styles.homeContainer}>
-        <Animated.View style={[styles.themeToggle, { opacity: fadeAnim }]}>
-            <Text style={styles.themeEmoji}>{isDarkMode ? '🌓' : '☀️'}</Text>
-            <Text style={[styles.themeText, { color: theme.textColor }]}>
-              {isDarkMode ? 'Dark Mode' : 'Light Mode'}
-            </Text>
-            <Switch
-              value={isDarkMode}
-              onValueChange={toggleTheme}
-              trackColor={{ false: '#767577', true: '#81b0ff' }}
-              thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
-            />
-          </Animated.View>
+        <View style={styles.themeToggle}>
+          <Text style={styles.themeEmoji}>{isDarkMode ? '🌓' : '☀️'}</Text>
+          <Text style={[styles.themeText, { color: theme.textColor }]}>
+            {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+          </Text>
+          <Switch
+            value={isDarkMode}
+            onValueChange={toggleBackground}
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
+          />
+        </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

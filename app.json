@@ -1,5 +1,6 @@
 {
   "expo": {
+    "assetBundlePatterns": ["**/*"],
     "name": "welcome",
     "slug": "welcome",
     "version": "1.0.0",
